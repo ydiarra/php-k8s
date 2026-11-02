@@ -24,14 +24,14 @@ class ReplicaSetTest extends \RenokiCo\PhpK8s\Test\TestCase
 
         $dep = $this->cluster->replicaSet()
             ->setName('mysql')
-            ->setLabels(['tier' => 'backend'])
+            ->setLabels(['tier' => 'rs-backend'])
             ->setAnnotations(['mysql/annotation' => 'yes'])
             ->setReplicas(3)
             ->setTemplate($pod);
 
         $this->assertEquals('apps/v1', $dep->getApiVersion());
         $this->assertEquals('mysql', $dep->getName());
-        $this->assertEquals(['tier' => 'backend'], $dep->getLabels());
+        $this->assertEquals(['tier' => 'rs-backend'], $dep->getLabels());
         $this->assertEquals(['mysql/annotation' => 'yes'], $dep->getAnnotations());
         $this->assertEquals(3, $dep->getReplicas());
         $this->assertEquals($pod->getName(), $dep->getTemplate()->getName());
@@ -56,7 +56,7 @@ class ReplicaSetTest extends \RenokiCo\PhpK8s\Test\TestCase
 
         $this->assertEquals('apps/v1', $dep->getApiVersion());
         $this->assertEquals('mysql', $dep->getName());
-        $this->assertEquals(['tier' => 'backend'], $dep->getLabels());
+        $this->assertEquals(['tier' => 'rs-backend'], $dep->getLabels());
         $this->assertEquals(['mysql/annotation' => 'yes'], $dep->getAnnotations());
         $this->assertEquals(3, $dep->getReplicas());
         $this->assertEquals($pod->getName(), $dep->getTemplate()->getName());
@@ -90,15 +90,15 @@ class ReplicaSetTest extends \RenokiCo\PhpK8s\Test\TestCase
 
         $pod = $this->cluster->pod()
             ->setName('mysql')
-            ->setLabels(['tier' => 'backend', 'replicaSet-name' => 'mysql'])
+            ->setLabels(['tier' => 'rs-backend', 'replicaSet-name' => 'mysql'])
             ->setAnnotations(['mysql/annotation' => 'yes'])
             ->setContainers([$mysql]);
 
         $dep = $this->cluster->replicaSet()
             ->setName('mysql')
-            ->setLabels(['tier' => 'backend'])
+            ->setLabels(['tier' => 'rs-backend'])
             ->setAnnotations(['mysql/annotation' => 'yes'])
-            ->setSelectors(['matchLabels' => ['tier' => 'backend']])
+            ->setSelectors(['matchLabels' => ['tier' => 'rs-backend']])
             ->setReplicas(1)
             ->setUpdateStrategy('RollingUpdate')
             ->setMinReadySeconds(0)
@@ -116,7 +116,7 @@ class ReplicaSetTest extends \RenokiCo\PhpK8s\Test\TestCase
 
         $this->assertEquals('apps/v1', $dep->getApiVersion());
         $this->assertEquals('mysql', $dep->getName());
-        $this->assertEquals(['tier' => 'backend'], $dep->getLabels());
+        $this->assertEquals(['tier' => 'rs-backend'], $dep->getLabels());
         $this->assertEquals(['mysql/annotation' => 'yes'], $dep->getAnnotations());
         $this->assertEquals(1, $dep->getReplicas());
         $this->assertEquals(0, $dep->getMinReadySeconds());
@@ -132,7 +132,7 @@ class ReplicaSetTest extends \RenokiCo\PhpK8s\Test\TestCase
         K8sReplicaSet::selectPods(function ($dep) {
             $this->assertInstanceOf(K8sReplicaSet::class, $dep);
 
-            return ['tier' => 'backend'];
+            return ['tier' => 'rs-backend'];
         });
 
         $pods = $dep->getPods();
@@ -186,7 +186,7 @@ class ReplicaSetTest extends \RenokiCo\PhpK8s\Test\TestCase
 
         $this->assertEquals('apps/v1', $dep->getApiVersion());
         $this->assertEquals('mysql', $dep->getName());
-        $this->assertEquals(['tier' => 'backend'], $dep->getLabels());
+        $this->assertEquals(['tier' => 'rs-backend'], $dep->getLabels());
         $this->assertEquals(['mysql/annotation' => 'yes'], $dep->getAnnotations());
         $this->assertEquals(1, $dep->getReplicas());
 
@@ -231,7 +231,7 @@ class ReplicaSetTest extends \RenokiCo\PhpK8s\Test\TestCase
 
         $this->assertEquals('apps/v1', $dep->getApiVersion());
         $this->assertEquals('mysql', $dep->getName());
-        $this->assertEquals(['tier' => 'backend'], $dep->getLabels());
+        $this->assertEquals(['tier' => 'rs-backend'], $dep->getLabels());
         $this->assertEquals([], $dep->getAnnotations());
         $this->assertEquals(2, $dep->getReplicas());
 
