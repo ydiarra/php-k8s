@@ -1,9 +1,9 @@
 apiVersion: apps/v1
-kind: RecpliaSet
+kind: ReplicaSet
 metadata:
   name: mysql
   labels:
-    tier: backend
+    tier: rs-backend
   annotations:
     mysql/annotation: "yes"
 spec:
