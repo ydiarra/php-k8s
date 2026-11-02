@@ -92,8 +92,15 @@ jobs:
           kubectl apply -f https://raw.githubusercontent.com/bitnami-labs/sealed-secrets/main/helm/sealed-secrets/crds/bitnami.com_sealedsecrets.yaml
 
       - name: Run tests
+        timeout-minutes: 11
         run: |
           vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
+
+      - name: Dump cluster state
+        if: failure()
+        run: |
+          kubectl get pods,jobs,cronjobs -A -o wide
+          kubectl get events -A --sort-by=.lastTimestamp | tail -60
 
       - uses: codecov/codecov-action@v5
         with:
