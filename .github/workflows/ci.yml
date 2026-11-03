@@ -94,7 +94,7 @@ jobs:
       - name: Run tests
         timeout-minutes: 11
         run: |
-          vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
+          vendor/bin/phpunit --coverage-filter src --coverage-text --coverage-clover=coverage.xml
 
       - name: Dump cluster state
         if: failure()
