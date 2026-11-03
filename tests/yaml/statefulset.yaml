@@ -3,7 +3,7 @@ kind: StatefulSet
 metadata:
   name: mysql
   labels:
-    tier: backend
+    tier: sts-backend
   annotations:
     mysql/annotation: "yes"
 spec:

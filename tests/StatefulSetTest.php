@@ -40,7 +40,7 @@ class StatefulSetTest extends TestCase
 
         $sts = $this->cluster->statefulSet()
             ->setName('mysql')
-            ->setLabels(['tier' => 'backend'])
+            ->setLabels(['tier' => 'sts-backend'])
             ->setAnnotations(['mysql/annotation' => 'yes'])
             ->setReplicas(3)
             ->setService($svc)
@@ -50,7 +50,7 @@ class StatefulSetTest extends TestCase
 
         $this->assertEquals('apps/v1', $sts->getApiVersion());
         $this->assertEquals('mysql', $sts->getName());
-        $this->assertEquals(['tier' => 'backend'], $sts->getLabels());
+        $this->assertEquals(['tier' => 'sts-backend'], $sts->getLabels());
         $this->assertEquals(['mysql/annotation' => 'yes'], $sts->getAnnotations());
         $this->assertEquals(3, $sts->getReplicas());
         $this->assertEquals($svc->getName(), $sts->getService());
@@ -92,7 +92,7 @@ class StatefulSetTest extends TestCase
 
         $this->assertEquals('apps/v1', $sts->getApiVersion());
         $this->assertEquals('mysql', $sts->getName());
-        $this->assertEquals(['tier' => 'backend'], $sts->getLabels());
+        $this->assertEquals(['tier' => 'sts-backend'], $sts->getLabels());
         $this->assertEquals(['mysql/annotation' => 'yes'], $sts->getAnnotations());
         $this->assertEquals(3, $sts->getReplicas());
         $this->assertEquals($svc->getName(), $sts->getService());
@@ -129,7 +129,7 @@ class StatefulSetTest extends TestCase
 
         $pod = $this->cluster->pod()
             ->setName('mysql')
-            ->setLabels(['tier' => 'backend', 'statefulset-name' => 'mysql'])
+            ->setLabels(['tier' => 'sts-backend', 'statefulset-name' => 'mysql'])
             ->setAnnotations(['mysql/annotation' => 'yes'])
             ->setContainers([$mysql]);
 
@@ -150,9 +150,9 @@ class StatefulSetTest extends TestCase
 
         $sts = $this->cluster->statefulSet()
             ->setName('mysql')
-            ->setLabels(['tier' => 'backend'])
+            ->setLabels(['tier' => 'sts-backend'])
             ->setAnnotations(['mysql/annotation' => 'yes'])
-            ->setSelectors(['matchLabels' => ['tier' => 'backend']])
+            ->setSelectors(['matchLabels' => ['tier' => 'sts-backend']])
             ->setReplicas(1)
             ->setService($svc)
             ->setTemplate($pod)
@@ -170,7 +170,7 @@ class StatefulSetTest extends TestCase
 
         $this->assertEquals('apps/v1', $sts->getApiVersion());
         $this->assertEquals('mysql', $sts->getName());
-        $this->assertEquals(['tier' => 'backend'], $sts->getLabels());
+        $this->assertEquals(['tier' => 'sts-backend'], $sts->getLabels());
         $this->assertEquals(['mysql/annotation' => 'yes'], $sts->getAnnotations());
         $this->assertEquals(1, $sts->getReplicas());
         $this->assertEquals($svc->getName(), $sts->getService());
@@ -188,7 +188,7 @@ class StatefulSetTest extends TestCase
         K8sStatefulSet::selectPods(function ($sts) {
             $this->assertInstanceOf(K8sStatefulSet::class, $sts);
 
-            return ['tier' => 'backend'];
+            return ['tier' => 'sts-backend'];
         });
 
         $pods = $sts->getPods();
@@ -241,7 +241,7 @@ class StatefulSetTest extends TestCase
 
         $this->assertEquals('apps/v1', $sts->getApiVersion());
         $this->assertEquals('mysql', $sts->getName());
-        $this->assertEquals(['tier' => 'backend'], $sts->getLabels());
+        $this->assertEquals(['tier' => 'sts-backend'], $sts->getLabels());
         $this->assertEquals(['mysql/annotation' => 'yes'], $sts->getAnnotations());
         $this->assertEquals(1, $sts->getReplicas());
 
@@ -291,7 +291,7 @@ class StatefulSetTest extends TestCase
 
         $this->assertEquals('apps/v1', $sts->getApiVersion());
         $this->assertEquals('mysql', $sts->getName());
-        $this->assertEquals(['tier' => 'backend'], $sts->getLabels());
+        $this->assertEquals(['tier' => 'sts-backend'], $sts->getLabels());
         $this->assertEquals([], $sts->getAnnotations());
         $this->assertEquals(2, $sts->getReplicas());
 
